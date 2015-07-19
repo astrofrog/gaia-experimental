@@ -8,14 +8,8 @@ from glue.core.message import ComponentsChangedMessage
 
 from glue.core.callback_property import add_callback
 
-N = 1e7
-X = np.random.uniform(-180., 180, N)
-Y = np.random.uniform(-90., 90, N)
+from .data import get_data_subset
 
-def get_data_subset(xmin, xmax, ymin, ymax):
-    keep = (X > xmin) & (X < xmax) & (Y > ymin) & (Y < ymax)
-    print("Extracting {0} data points".format(np.sum(keep)))
-    return X[keep], Y[keep]
 
 class GAIAScatterWidget(ScatterWidget):
 
@@ -42,7 +36,8 @@ class GAIAScatterWidget(ScatterWidget):
 
     def limits_changed(self, *args, **kwargs):
 
-        x, y = get_data_subset(self.client.xmin, self.client.xmax, self.client.ymin, self.client.ymax)
+        x, y = get_data_subset(self.client.xmin, self.client.xmax,
+                               self.client.ymin, self.client.ymax)
 
         # Find link between component names and IDs
         component_ids = {}
